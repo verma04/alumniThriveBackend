@@ -1,0 +1,40 @@
+{
+  "name": "metadata",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev ",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "migration:generate": "drizzle-kit generate:pg --schema=./@drizzle/src/db/schema.ts",
+    "migration:push": "node -r esbuild-register ./@drizzle/src/db/migrate.ts",
+    "migrate": "drizzle-kit generate:pg --schema=./src/db/schema.ts && node -r esbuild-register src/db/migrate.ts",
+    "db:seed": "node -r esbuild-register src/db/seed.ts"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.0.18",
+    "@types/node": "20.1.2",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "autoprefixer": "10.4.14",
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.27.0",
+    "esbuild-register": "^3.5.0",
+    "eslint": "8.40.0",
+    "eslint-config-next": "13.4.1",
+    "next": "13.4.1",
+    "pg": "^8.11.1",
+    "postcss": "8.4.23",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "3.3.2",
+    "ts-node": "^10.9.1",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "@types/pg": "^8.10.2",
+    "drizzle-kit": "^0.19.3"
+  }
+}
