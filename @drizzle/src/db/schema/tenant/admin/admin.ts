@@ -1,62 +1,75 @@
-// import { relations, sql } from "drizzle-orm";
-// import {
-//   integer,
-//   pgTable,
-//   serial,
-//   text,
-//   timestamp,
-//   uuid,
-//   varchar,
-// } from "drizzle-orm/pg-core";
-// import { domain } from "../domain/domain";
-// import { subOrganization } from "../organization/organization";
+import {
+  pgTable,
+  serial,
+  text,
+  integer,
+  jsonb,
+  uuid,
+  timestamp,
+  boolean,
+  varchar,
+} from "drizzle-orm/pg-core";
+import { relations, sql } from "drizzle-orm";
+import { organization } from "../organizationSchema/organization";
 
-// export const admin = pgTable("admin", {
-//   id: serial("id").primaryKey(),
-//   firstName: text("full_name").notNull(),
-//   lastName: text("full_name").notNull(),
-//   phone: varchar("phone", { length: 256 }),
-//   password: text("full_name").notNull(),
-//   email: text("full_name").notNull(),
-//   createdAt: timestamp("created_at"),
-//   updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`),
-//   organizationId: text("organization_id")
-//     .notNull()
-//     .references(() => organization.id),
-// });
-
-// export const organization = pgTable("organization", {
-//   id: serial("id").primaryKey(),
-//   name: text("full_name").notNull(),
-//   createdAt: timestamp("created_at"),
-//   updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`),
-// });
-
-// export const userRelations = relations(organization, ({ one, many }) => ({
-//   profile: one(admin, {
-//     fields: [organization.id],
-//     references: [admin.organizationId],
-//   }),
-// }));
-
-// export const tenantRelations = relations(organization, ({ one, many }) => ({
-//   profileInfo: one(domain),
-// }));
-
-import { pgTable, serial, text, integer, jsonb } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
-
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  name: text("name"),
+export const users = pgTable("admin", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  firstName: text("firstName").notNull(),
+  lastName: text("lastName").notNull(),
+  password: text("password").notNull(),
+  email: text("email").notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
-export const usersRelations = relations(users, ({ one }) => ({
+export const usersRelations = relations(users, ({ one, many }) => ({
+  otp: one(otp),
+  organization: one(organization),
   profileInfo: one(profileInfo),
+  posts: many(loginSession),
 }));
 
-export const profileInfo = pgTable("profile_info", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
+export const profileInfo = pgTable("profileInfo", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id"),
   metadata: jsonb("metadata"),
+  designation: text("designation").notNull(),
+  phone: text("phone").notNull(),
 });
+
+export const profileInfoRelations = relations(profileInfo, ({ one }) => ({
+  user: one(users, {
+    fields: [profileInfo.userId],
+    references: [users.id],
+  }),
+}));
+
+export const otp = pgTable("otp", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id").references(() => users.id),
+  otp: text("otp").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`),
+  timeOfExpire: integer("timeOfExpire").default(10),
+  isExpired: boolean("isExpired").default(false),
+});
+
+export const loginSession = pgTable("session", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  token: text("token").notNull(),
+  ip: text("ip"),
+  deviceOs: text("deviceOs"),
+  deviceId: uuid("deviceId").defaultRandom(),
+  userId: uuid("user_id").notNull(),
+  ipAddress: text("ipAddress"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`),
+  logout: boolean("logout").default(false),
+});
+
+export const loginRelations = relations(loginSession, ({ one }) => ({
+  author: one(users, {
+    fields: [loginSession.userId],
+    references: [users.id],
+  }),
+}));

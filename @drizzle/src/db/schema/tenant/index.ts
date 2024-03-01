@@ -1,3 +1,4 @@
 export * from "./admin";
-export * from "./organization";
+export * from "./organizationSchema";
+export * from "./domain";
 // export * from "./domain";

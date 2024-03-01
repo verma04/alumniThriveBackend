@@ -10,14 +10,9 @@ import { GraphQLError } from "graphql";
 dotenv.config();
 
 const {
-  GraphQLUpload,
   graphqlUploadExpress, // A Koa implementation is also exported.
 } = require("graphql-upload");
-import {
-  createEnvelopQueryValidationPlugin,
-  constraintDirectiveTypeDefs,
-  constraintDirective,
-} from "graphql-constraint-directive";
+import { constraintDirective } from "graphql-constraint-directive";
 const { makeExecutableSchema } = require("@graphql-tools/schema");
 import resolvers from "./resolvers";
 import typeDefs from "./types";
@@ -58,27 +53,14 @@ const httpServer = http.createServer(app);
     // an Apollo Server instance and optional configuration options
     expressMiddleware(server, {
       context: async ({ req }) => {
-        if (process.env.NODE_ENV === "production") {
-          if (req.get("origin") !== process.env.ACCOUNTS_ORIGIN) {
-            throw new GraphQLError("User is not authenticated", {
-              extensions: {
-                code: "UNAUTHENTICATED",
-                http: { status: 401 },
-              },
-            });
-          }
-
-          return req;
-        } else {
-          return req;
-        }
+        return req;
       },
     })
   );
 
   // Modified server startup
   await new Promise<void>((resolve) =>
-    httpServer.listen({ port: process.env.AMIN_PORT }, resolve)
+    httpServer.listen({ port: process.env.LOGIN_DOMAIN }, resolve)
   );
-  console.log(`🚀 Server ready at ${process.env.AMIN_PORT}`);
+  console.log(`🚀 Server ready at ${process.env.LOGIN_DOMAIN}`);
 })();

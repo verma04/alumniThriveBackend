@@ -1,2 +1,4 @@
 export * from "./alumni";
-export * from "./profile";
+export * from "./events";
+export * from "./groups";
+export * from "./feed";
