@@ -1,10 +1,10 @@
 import type { Config } from "drizzle-kit";
 import * as dotenv from "dotenv";
 dotenv.config();
-
+("./");
 export default {
-  schema: "./src/db/schema",
-  out: "./@drizzle/drizzle",
+  schema: "./@drizzle/src/db/schema",
+  out: "./drizzle",
   driver: "pg",
   dbCredentials: {
     connectionString: process.env.POSTGRES_DATABASE_URL as string,

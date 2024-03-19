@@ -12,6 +12,7 @@ import {
   pgEnum,
   json,
   primaryKey,
+  unique,
 } from "drizzle-orm/pg-core";
 import { organization } from "../tenant";
 import { events } from "./events";
@@ -38,6 +39,7 @@ export const alumniRelations = relations(alumni, ({ one, many }) => ({
   profileInfo: one(alumniProfile),
   aboutAlumni: one(aboutAlumni),
   alumni: many(alumniToOrganization),
+  resume: many(alumniToOrganization),
 }));
 
 export const alumniProfile = pgTable("alumniProfile", {
@@ -51,11 +53,17 @@ export const alumniProfile = pgTable("alumniProfile", {
   phone: json("phone"),
 });
 export const aboutAlumni = pgTable("aboutAlumni", {
+  about: text("about"),
   id: uuid("id").defaultRandom().primaryKey(),
   currentPosition: text("currentPosition"),
   linkedin: text("linkedin"),
   instagram: text("instagram"),
   portfolio: text("portfolio"),
+  alumniId: uuid("alumni_ID").notNull(),
+});
+
+export const alumniResume = pgTable("alumniResume", {
+  currentPosition: text("currentPosition"),
   alumniId: uuid("alumni_ID").notNull(),
 });
 
@@ -71,6 +79,12 @@ export const aboutAlumniRelations = relations(aboutAlumni, ({ one }) => ({
     references: [alumni.id],
   }),
 }));
+export const alumniResumeRelations = relations(alumniResume, ({ one }) => ({
+  user: one(alumni, {
+    fields: [alumniResume.alumniId],
+    references: [alumni.id],
+  }),
+}));
 
 export const alumniToOrganization = pgTable(
   "alumniOrganizationProfile",
@@ -79,6 +93,8 @@ export const alumniToOrganization = pgTable(
     organizationId: uuid("organization_id"),
     isApproved: boolean("isApproved").notNull().default(false),
     isRequested: boolean("isRequested").notNull().default(false),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`),
   },
   (table) => {
     return {
@@ -101,6 +117,19 @@ export const alumniToOrganizationRelations = relations(
     groupMember: many(groupMember),
     groupInvitation: many(groupInvitation),
     groupRequest: many(groupRequest),
+
+    followers: many(alumniConnection, {
+      relationName: "followers",
+    }),
+    following: many(alumniConnection, {
+      relationName: "following",
+    }),
+    requestSent: many(alumniRequest, {
+      relationName: "requestSent",
+    }),
+    requestReceive: many(alumniRequest, {
+      relationName: "requestReceive",
+    }),
 
     alumni: one(alumni, {
       fields: [alumniToOrganization.alumniId],
@@ -128,3 +157,69 @@ export const alumniKycRelations = relations(alumniKyc, ({ one, many }) => ({
     references: [alumniToOrganization.alumniId],
   }),
 }));
+
+export const alumniConnection = pgTable(
+  "alumniConnection",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    followingId: uuid("alumni_id").notNull(),
+    followerId: uuid("followers_id").notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+    isAccepted: boolean("isAccepted").notNull(),
+  },
+  (table) => {
+    return {
+      unq: unique().on(table.followingId, table.followerId),
+      unq2: unique("alumniConnection").on(table.followingId, table.followerId),
+    };
+  }
+);
+
+export const alumniConnectionRelations = relations(
+  alumniConnection,
+  ({ one, many }) => ({
+    following: one(alumniToOrganization, {
+      fields: [alumniConnection.followingId],
+      references: [alumniToOrganization.alumniId],
+      relationName: "following",
+    }),
+    followers: one(alumniToOrganization, {
+      fields: [alumniConnection.followerId],
+      references: [alumniToOrganization.alumniId],
+      relationName: "followers",
+    }),
+  })
+);
+
+export const alumniRequest = pgTable(
+  "alumniConnectionRequest",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id").notNull(),
+    senderId: uuid("sender_id").notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+    isAccepted: boolean("isAccepted").notNull(),
+  },
+  (table) => {
+    return {
+      unq: unique().on(table.userId, table.senderId),
+      unq2: unique("alumniRequest").on(table.userId, table.senderId),
+    };
+  }
+);
+
+export const alumniRequestRelations = relations(
+  alumniRequest,
+  ({ one, many }) => ({
+    user: one(alumniToOrganization, {
+      fields: [alumniRequest.userId],
+      references: [alumniToOrganization.alumniId],
+      relationName: "requestSent",
+    }),
+    sender: one(alumniToOrganization, {
+      fields: [alumniRequest.senderId],
+      references: [alumniToOrganization.alumniId],
+      relationName: "requestReceive",
+    }),
+  })
+);

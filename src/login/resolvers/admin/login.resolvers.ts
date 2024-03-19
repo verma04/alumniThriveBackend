@@ -116,10 +116,7 @@ const loginResolvers = {
             .returning();
           console.log(data);
 
-          const generate = await generateOrganizationAlumniProfile(
-            data[0].id,
-            domain
-          );
+          await generateOrganizationAlumniProfile(data[0].id, domain);
 
           const generateToken = await generateJwtToken(data[0]);
 

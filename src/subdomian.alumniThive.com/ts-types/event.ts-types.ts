@@ -36,8 +36,28 @@ export interface eventForGroup {
   paypalDetails: string;
   venue: string;
   registrationEndDate: Date | any;
+  contactNumber: string;
+  contactEmail: string;
 }
 
 export interface eventForGroupInput {
   input: eventForGroup;
+}
+
+interface item {
+  title: string;
+  description: string;
+}
+
+export interface createSponsorShip {
+  id: string;
+  type: string;
+  currency: string;
+  price: string;
+  content: item[];
+  slug: string;
+}
+
+export interface eventCreateSponsorShip {
+  input: createSponsorShip;
 }

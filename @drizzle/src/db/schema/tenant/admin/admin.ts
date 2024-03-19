@@ -53,6 +53,12 @@ export const otp = pgTable("otp", {
   timeOfExpire: integer("timeOfExpire").default(10),
   isExpired: boolean("isExpired").default(false),
 });
+export const otpRelations = relations(otp, ({ one }) => ({
+  user: one(users, {
+    fields: [otp.userId],
+    references: [users.id],
+  }),
+}));
 
 export const loginSession = pgTable("session", {
   id: uuid("id").defaultRandom().primaryKey(),

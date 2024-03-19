@@ -29,7 +29,7 @@ const upload = async (file) => {
     const data1 = await s3.upload(params).promise();
     const { Location } = data1;
 
-    return Location;
+    return newFilename;
   } catch (error) {
     console.warn(error);
   }

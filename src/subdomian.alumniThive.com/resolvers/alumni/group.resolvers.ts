@@ -122,7 +122,7 @@ const groupResolvers = {
             isGroupAdmin,
             isJoinRequest,
             groupMember: find?.groupMember?.map((t) => ({
-              id: t?.id,
+              id: t?.alumniId,
               role: t?.role,
 
               user: {
@@ -183,145 +183,12 @@ const groupResolvers = {
         console.log(data);
 
         return data;
-        // const find = await db.query.groups.findFirst({
-        //   where: (d, { eq }) => eq(d.slug, slug),
-        //   with: {
-        //     setting: true,
-        //     groupMember: {
-        //       with: {
-        //         alumni: {
-        //           with: {
-        //             alumni: true,
-        //           },
-        //         },
-        //       },
-        //     },
-        //   },
-        // });
-
-        // console.log(find);
       } catch (error) {
         console.log(error);
         throw error;
       }
     },
 
-    async getGroupFeed(_: any, { input }: any, context: any) {
-      try {
-        const { id } = await checkAuth(context);
-
-        const org_id = await domainCheck(context);
-
-        const find = await db.query.alumniFeed.findMany({
-          where: (d, { eq }) => eq(d.groupId, input.id),
-          orderBy: [desc(alumniFeed.createdAt)],
-          limit: 10,
-          offset: input.offset,
-          with: {
-            media: true,
-            reactions: {
-              with: {
-                alumni: {
-                  with: {
-                    alumni: {
-                      with: {
-                        aboutAlumni: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            alumni: {
-              with: {
-                alumni: true,
-              },
-            },
-          },
-        });
-
-        const feed = await find.map((t) => ({
-          id: t.id,
-          description: t.description,
-          media: t.media,
-          createdAt: t.createdAt,
-          user: t?.alumni?.alumni,
-          reactions: t.reactions.map((set) => ({
-            type: set.reactionsType,
-            user: {
-              ...set.alumni.alumni,
-              aboutAlumni: set.alumni.alumni.aboutAlumni,
-            },
-          })),
-        }));
-
-        console.log(feed);
-        return feed;
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
-    },
-
-    async getAllAlumniFeed(_: any, {}: any, context: any) {
-      try {
-        const { id } = await checkAuth(context);
-
-        const org_id = await domainCheck(context);
-
-        const find = await db.query.alumniFeed.findMany({
-          where: and(
-            eq(alumniFeed.alumniId, id),
-            eq(alumniFeed.orgId, org_id),
-            eq(alumniFeed.feedForm, "group")
-          ),
-
-          with: {
-            reactions: {
-              with: {
-                alumni: {
-                  with: {
-                    alumni: {
-                      with: {
-                        aboutAlumni: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
-
-            group: true,
-            alumni: {
-              with: {
-                alumni: true,
-              },
-            },
-          },
-        });
-
-        const feed = await find.map((t) => ({
-          id: t.id,
-          description: t.description,
-          createdAt: t.createdAt,
-          user: t?.alumni?.alumni,
-          reactions: t.reactions.map((set) => ({
-            type: set.reactionsType,
-            user: {
-              ...set.alumni.alumni,
-              aboutAlumni: set.alumni.alumni.aboutAlumni,
-            },
-          })),
-        }));
-
-        return feed;
-
-        // return { ...find, privacy: find?.setting?.privacy };
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
-    },
     async getAllGroupPeople(_: any, { input }: any, context: any) {
       try {
         const { id } = await checkAuth(context);
@@ -343,7 +210,7 @@ const groupResolvers = {
           },
         });
         return find.map((t) => ({
-          id: t?.id,
+          id: t?.alumniId,
           role: t?.role,
           user: {
             ...t?.alumni?.alumni,
@@ -405,7 +272,7 @@ const groupResolvers = {
           orderBy: (posts, { desc }) => [desc(posts.createdAt)],
           with: {
             eventsPayments: true,
-            eventHost: {
+            eventCreator: {
               with: {
                 alumni: {
                   with: {
@@ -419,9 +286,9 @@ const groupResolvers = {
 
         return find.map((t) => ({
           ...t,
-          eventHost: {
-            ...t?.eventHost?.alumni,
-            aboutAlumni: t?.eventHost?.alumni?.aboutAlumni,
+          eventCreator: {
+            ...t?.eventCreator?.alumni,
+            aboutAlumni: t?.eventCreator?.alumni?.aboutAlumni,
           },
         }));
       } catch (error) {
@@ -743,84 +610,6 @@ const groupResolvers = {
       }
     },
 
-    async addFeedGroup(_: any, { input }: groupFeed, context: any) {
-      try {
-        const { id } = await checkAuth(context);
-        const org_id = await domainCheck(context);
-
-        const feedImages = await uploadFeedImage(org_id, input.image);
-
-        const createFeed = await db
-          .insert(alumniFeed)
-          .values({
-            description: input.description,
-            alumniId: id,
-            feedForm: "group",
-            groupId: input.groupId,
-            orgId: org_id,
-          })
-          .returning();
-
-        if (feedImages.length > 0) {
-          const values = await feedImages.map((set) => ({
-            feedId: createFeed[0].id,
-            url: set.file,
-            organization: org_id,
-            alumni: id,
-            groupId: input.groupId,
-          }));
-          console.log(values);
-          const img = await db.insert(media).values(values).returning();
-          console.log(img);
-        }
-
-        const find = await db.query.alumniFeed.findFirst({
-          where: (d, { eq }) => eq(d.id, createFeed[0].id),
-          orderBy: [desc(alumniFeed.createdAt)],
-
-          with: {
-            media: true,
-            reactions: {
-              with: {
-                alumni: {
-                  with: {
-                    alumni: {
-                      with: {
-                        aboutAlumni: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            alumni: {
-              with: {
-                alumni: true,
-              },
-            },
-          },
-        });
-
-        console.log(find);
-        return {
-          id: find.id,
-          description: find.description,
-          createdAt: find.createdAt,
-          user: find?.alumni?.alumni,
-          reactions: find?.reactions?.map((set) => ({
-            type: set?.reactionsType,
-            user: {
-              ...set?.alumni?.alumni,
-              aboutAlumni: set?.alumni?.alumni?.aboutAlumni,
-            },
-          })),
-        };
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
-    },
-
     async likeFeed(_: any, { input }: feedLike, context: any) {
       try {
         const { id } = await checkAuth(context);
@@ -940,7 +729,7 @@ const groupResolvers = {
           if (input.accept) {
             await db
               .update(groupRequest)
-              .set({ acceptedBy: id, isAccepted: true })
+              .set({ isAccepted: true })
               .where(
                 and(
                   eq(groupRequest.groupId, input.groupID),

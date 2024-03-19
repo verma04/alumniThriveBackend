@@ -17,6 +17,8 @@ import { and, eq } from "drizzle-orm";
 import upload from "../../utils/upload/upload.utils";
 import { inputKyc, kyc } from "../../ts-types/types";
 
+import domainCheck from "../../../commanUtils/domianCheck";
+
 const organizationResolvers = {
   Query: {
     async checkDomain(_: any, { domain }: any, context: any) {
@@ -48,29 +50,25 @@ const organizationResolvers = {
       try {
         const data = await checkAuth(context);
 
-        const domain = context
-          .get("origin")
-          .split(".")[0]
-          ?.replace("http://", "");
+        const org_id = await domainCheck(context);
 
-        const findDomain = await db.query.domain.findFirst({
-          where: (d, { eq }) => eq(d.domain, domain),
-        });
+        console.log(data.id, "sd");
 
-        console.log(findDomain, data.id);
         const findOrg = await db.query.alumniToOrganization.findFirst({
           where: and(
             eq(alumniToOrganization.alumniId, data.id),
-            eq(alumniToOrganization.organizationId, findDomain.organizationId)
+            eq(alumniToOrganization.organizationId, org_id)
           ),
+          with: {
+            followers: true,
+            following: true,
+          },
         });
 
-        console.log(findOrg, data.id);
-
+        console.log(findOrg);
         const findUser = await db.query.alumni.findFirst({
           where: (d, { eq }) => eq(d.id, findOrg.alumniId),
         });
-        console.log(findOrg);
 
         return {
           id: findUser.id,

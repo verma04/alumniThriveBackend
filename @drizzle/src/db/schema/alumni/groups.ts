@@ -24,7 +24,7 @@ export const groupTypeEnum = pgEnum("groupType", [
 ]);
 
 export const managerRole = pgEnum("managerRole", ["admin", "manager", "user"]);
-export const userAddedForm = pgEnum("managerRole", ["invite", "direct"]);
+export const userAddedForm = pgEnum("userAddedForm", ["invite", "direct"]);
 export const joiningConditionsEnum = pgEnum("joiningConditions", [
   "Anyone Can Join",
   "Admin only Add",
@@ -64,7 +64,6 @@ export const groupRelations = relations(groups, ({ one, many }) => ({
 export const groupMember = pgTable(
   "users_to_groups",
   {
-    id: uuid("id").defaultRandom().primaryKey(),
     alumniId: uuid("alumni_id").notNull(),
     groupId: uuid("group_id").notNull(),
     role: managerRole("managerRole").default("user"),
@@ -92,7 +91,6 @@ export const groupToUserRelations = relations(groupMember, ({ one, many }) => ({
     fields: [groupMember.alumniId],
     references: [alumniToOrganization.alumniId],
   }),
-  groupFeed: many(alumniFeed),
 }));
 
 export const groupsSetting = pgTable("groupsSetting", {
@@ -154,7 +152,7 @@ export const groupRequest = pgTable(
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`),
     isAccepted: boolean("isAccepted").default(false),
-    acceptedBy: uuid("acceptedBy"),
+    // acceptedBy: uuid("acceptedBy"),
   },
   (table) => {
     return {
@@ -178,9 +176,9 @@ export const groupRequestRelations = relations(
       fields: [groupRequest.alumniId],
       references: [alumniToOrganization.alumniId],
     }),
-    acceptedBy: one(alumniToOrganization, {
-      fields: [groupRequest.acceptedBy],
-      references: [alumniToOrganization.alumniId],
-    }),
+    // acceptedBy: one(alumniToOrganization, {
+    //   fields: [groupRequest.acceptedBy],
+    //   references: [alumniToOrganization.alumniId],
+    // }),
   })
 );

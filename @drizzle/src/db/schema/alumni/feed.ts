@@ -15,7 +15,7 @@ import { groups } from "./groups";
 import { alumniToOrganization } from "./alumni";
 import { organization } from "../tenant";
 
-export const feedForm = pgEnum("feedForm", ["group"]);
+export const feedForm = pgEnum("feedForm", ["group", "events"]);
 
 export const alumniFeed = pgTable("alumniFeed", {
   id: uuid("id").defaultRandom().primaryKey(),

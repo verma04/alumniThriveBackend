@@ -15,7 +15,7 @@ const upload = async (file) => {
   const date = moment().format("YYYYMMDD");
   const randomString = Math.random().toString(36).substring(2, 7);
 
-  const newFilename = `${date}-${randomString}}`;
+  const newFilename = `${date}-${randomString}`;
 
   const Body = createReadStream();
 
@@ -30,7 +30,7 @@ const upload = async (file) => {
     const data1 = await s3.upload(params).promise();
     const { Location } = data1;
 
-    return Location;
+    return newFilename;
   } catch (error) {
     console.warn(error);
   }

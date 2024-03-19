@@ -8,10 +8,7 @@ const groupTypes = gql`
   type success {
     success: Boolean
   }
-  type media {
-    url: String
-    id: ID
-  }
+
   type group {
     name: String
     cover: String
