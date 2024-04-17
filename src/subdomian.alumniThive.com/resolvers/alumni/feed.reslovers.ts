@@ -1,31 +1,10 @@
 import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { db } from "../../../../@drizzle";
-import {
-  alumniToOrganization,
-  groupInvitation,
-  groupRequest,
-  groups,
-  groupsSetting,
-  groupMember,
-  alumniFeed,
-  feedReactions,
-  aboutAlumni,
-  events,
-  media,
-} from "../../../../@drizzle/src/db/schema";
-import {
-  acceptInvitation,
-  acceptInvitationInput,
-  acceptRequestGroup,
-  addGroupInput,
-  feedLike,
-  groupFeed,
-  groupSlug,
-  invitationInput,
-} from "../../ts-types/group.ts-type";
+import { alumniFeed, media } from "../../../../@drizzle/src/db/schema";
+import { groupFeed } from "../../ts-types/group.ts-type";
 import checkAuth from "../../utils/auth/checkAuth.utils";
 import slugify from "slugify";
-import { GraphQLError } from "graphql";
+
 import domainCheck from "../../../commanUtils/domianCheck";
 import uploadFeedImage from "../../../tenant/admin/utils/upload/uploadFeedImage.utils";
 
@@ -97,9 +76,65 @@ const feedResolvers = {
         const find = await db.query.alumniFeed.findMany({
           where: and(
             eq(alumniFeed.alumniId, id),
-            eq(alumniFeed.orgId, org_id),
+            eq(alumniFeed.organization, org_id),
             eq(alumniFeed.feedForm, "group")
           ),
+
+          with: {
+            reactions: {
+              with: {
+                alumni: {
+                  with: {
+                    alumni: {
+                      with: {
+                        aboutAlumni: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+
+            group: true,
+            alumni: {
+              with: {
+                alumni: true,
+              },
+            },
+          },
+        });
+
+        const feed = await find.map((t) => ({
+          id: t.id,
+          description: t.description,
+          createdAt: t.createdAt,
+          user: t?.alumni?.alumni,
+          reactions: t.reactions.map((set) => ({
+            type: set.reactionsType,
+            user: {
+              ...set.alumni.alumni,
+              aboutAlumni: set.alumni.alumni.aboutAlumni,
+            },
+          })),
+        }));
+
+        return feed;
+
+        // return { ...find, privacy: find?.setting?.privacy };
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+
+    async getAllUserFeed(_: any, {}: any, context: any) {
+      try {
+        const { id } = await checkAuth(context);
+
+        const org_id = await domainCheck(context);
+
+        const find = await db.query.alumniFeed.findMany({
+          where: and(eq(alumniFeed.organization, org_id)),
 
           with: {
             reactions: {
@@ -163,7 +198,7 @@ const feedResolvers = {
             alumniId: id,
             feedForm: "group",
             groupId: input.groupId,
-            orgId: org_id,
+            organization: org_id,
           })
           .returning();
 

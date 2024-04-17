@@ -1,6 +1,8 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   integer,
+  pgEnum,
   pgTable,
   serial,
   text,
@@ -10,8 +12,14 @@ import {
 } from "drizzle-orm/pg-core";
 import { domain } from "../domain/domain";
 import { users } from "../admin";
-import { alumniToOrganization, events, groups } from "../../alumni";
-import { group } from "console";
+import {
+  alumni,
+  alumniToOrganization,
+  events,
+  groups,
+  marketPlace,
+  marketPlaceCategory,
+} from "../../alumni";
 
 export const organization = pgTable("organization", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -32,9 +40,13 @@ export const organizationRelations = relations(
   organization,
   ({ one, many }) => ({
     domain: one(domain),
+    razorpay: one(razorpay),
+    stripe: one(stripe),
     group: many(groups),
     events: many(events),
     organization: many(alumniToOrganization),
+    marketPlaceListing: many(marketPlace),
+    marketPlaceListingCategory: many(marketPlaceCategory),
     theme: one(theme),
     user: one(users, {
       fields: [organization.userId],
@@ -56,6 +68,36 @@ export const theme = pgTable("theme", {
 export const themeRelations = relations(theme, ({ one }) => ({
   user: one(organization, {
     fields: [theme.organizationId],
+    references: [organization.id],
+  }),
+}));
+
+export const razorpay = pgTable("razorpay", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  keyID: text("key_id").unique(),
+  keySecret: text("key_secret").unique(),
+  organization: uuid("organization_id").notNull(),
+  isEnabled: boolean("isEnabled").default(false),
+});
+
+export const razorpayRelations = relations(razorpay, ({ one }) => ({
+  organization: one(organization, {
+    fields: [razorpay.organization],
+    references: [organization.id],
+  }),
+}));
+
+export const stripe = pgTable("stripe ", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  keyID: text("key_id").unique(),
+  keySecret: text("key_secret").unique(),
+  organization: uuid("organization_id").notNull(),
+  isEnabled: boolean("isEnabled").default(false),
+});
+
+export const stripeRelations = relations(stripe, ({ one }) => ({
+  organization: one(organization, {
+    fields: [stripe.organization],
     references: [organization.id],
   }),
 }));

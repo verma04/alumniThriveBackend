@@ -6,18 +6,13 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import * as dotenv from "dotenv";
-import { GraphQLError } from "graphql";
+
 dotenv.config();
 
 const {
-  GraphQLUpload,
   graphqlUploadExpress, // A Koa implementation is also exported.
 } = require("graphql-upload");
-import {
-  createEnvelopQueryValidationPlugin,
-  constraintDirectiveTypeDefs,
-  constraintDirective,
-} from "graphql-constraint-directive";
+import { constraintDirective } from "graphql-constraint-directive";
 const { makeExecutableSchema } = require("@graphql-tools/schema");
 import resolvers from "./resolvers";
 import typeDefs from "./types";
@@ -27,6 +22,7 @@ interface MyContext {
 
 // Required logic for integrating with Express
 const app = express();
+app.use(require("express-status-monitor")());
 // Our httpServer handles incoming requests to our Express app.
 // Below, we tell Apollo Server to "drain" this httpServer,
 // enabling our servers to shut down gracefully.

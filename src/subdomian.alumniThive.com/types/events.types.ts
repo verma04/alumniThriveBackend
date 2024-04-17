@@ -35,6 +35,11 @@ const eventsTypes = gql`
     event: event
     createdAt: Date
     updatedAt: Date
+    showPrice: Boolean
+  }
+  type sponsor {
+    eventSponsorship: [eventSponsorship]
+    eventSponsors: [eventSponsors]
   }
   type event {
     id: String
@@ -51,6 +56,15 @@ const eventsTypes = gql`
     slug: String
     eventHost: eventHost
     eventsPayments: payments
+    isRegistered: Boolean
+  }
+
+  type host {
+    id: String
+    hostType: String
+    createdAt: Date
+    updatedAt: Date
+    alumni: connection
   }
 
   input addEvent {
@@ -87,25 +101,141 @@ const eventsTypes = gql`
     price: Int
     content: [item]
     slug: String!
+    showPrice: Boolean
   }
 
   input slug {
     slug: String
   }
+  input typeHostId {
+    id: ID
+    event: String
+  }
   input deleteSponsorShip {
     id: String
+  }
+  type venue {
+    venue: String
+    id: String
+    address: String
+  }
+  input addVenue {
+    venue: String
+    id: String
+    address: String
+    event: String
+  }
+  input addSpeaker {
+    id: String
+    name: String
+    linkedin: String
+    cover: Upload
+    about: String
+    event: String!
+    type: String!
+    speaker: ID
+  }
+  input addAgenda {
+    id: String
+    title: String
+    videoSteam: String
+    date: String
+    startTime: String
+    endTime: String
+    venue: String
+    speakers: [String]
+    isPinned: Boolean
+    isDraft: Boolean
+    isPublished: Boolean
+    description: String
+    event: ID
+  }
+  type agenda {
+    id: String
+    title: String
+    videoSteam: String
+    date: String
+    startTime: String
+    endTime: String
+    venue: String
+    isPinned: Boolean
+    isDraft: Boolean
+    isPublished: Boolean
+    description: String
+  }
+  type speaker {
+    avatar: String
+    id: String
+    fullName: String
+    linkedin: String
+    cover: Upload
+    about: String
+  }
+  type eventSponsors {
+    id: ID
+    sponsorUserName: String
+    sponsorUserDesignation: String
+    sponsorLogo: String
+    sponsorShip: eventSponsorship
+    createdAt: Date
+    sponsorName: String
+  }
+  input inputEventSponsors {
+    sponsorUserName: String
+    sponsorUserDesignation: String
+    sponsorLogo: Upload
+    sponsorShipId: String
+    sponsorName: String
+    event: String!
+  }
+  type eventGallery {
+    id: ID
+    mediaType: String
+    url: String
+  }
+  input inputEventGallery {
+    mediaType: String
+    file: [Upload]
+    event: String
+  }
+  type success {
+    success: Boolean
+  }
+  type payment {
+    orderId: String
+    currency: String
+    amount: String
   }
   type Query {
     getEventBySlug(input: slug): event
     getAllEvents: [event]
     getEventAsHost: [event]
     getEventSponsorship(input: slug): [eventSponsorship]
+    getAllHost(input: slug): [host]
+    getAllVenue(input: slug): [venue]
+    getAllSpeakers(input: slug): [speaker]
+    getAllAgenda(input: slug): [agenda]
+    getEventGallery(input: slug): [eventGallery]
+    getEventSponsors(input: slug): [eventSponsors]
+
+    getSponsorshipEvents(input: slug): sponsor
+    getSpeakersEvents(input: slug): [speaker]
+    getPaidEventsDetails(input: slug): payment
   }
   type Mutation {
     createEventForGroup(input: addEvent): event
     createEvent(input: addEvent): event
     addSponsorShip(input: eventCreateSponsorShip): eventSponsorship
     deleteSponsorShip(input: deleteSponsorShip): eventSponsorship
+    addHost(input: typeHostId): host
+    removeHost(input: typeHostId): host
+    addVenue(input: addVenue): venue
+    addEventSpeaker(input: addSpeaker): speaker
+    addEventAgenda(input: addAgenda): agenda
+    addEventMedia(input: inputEventGallery): [eventGallery]
+    addEventSponsors(input: inputEventSponsors): eventSponsors
+    registerEvent(input: slug): success
+    registerPaidEvent(input: slug): success
   }
 `;
 

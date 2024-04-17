@@ -15,9 +15,10 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 import { organization } from "../tenant";
-import { events } from "./events";
+import { events, eventsAttendees } from "./events";
 import { groupInvitation, groupRequest, groups, groupMember } from "./groups";
 import { feedReactions } from "./feed";
+import { marketPlace } from "./marketPlace";
 
 export const loginTypeEnum = pgEnum("loginType", [
   "email",
@@ -117,7 +118,8 @@ export const alumniToOrganizationRelations = relations(
     groupMember: many(groupMember),
     groupInvitation: many(groupInvitation),
     groupRequest: many(groupRequest),
-
+    eventsAttendees: many(eventsAttendees),
+    marketPlaceListing: many(marketPlace),
     followers: many(alumniConnection, {
       relationName: "followers",
     }),

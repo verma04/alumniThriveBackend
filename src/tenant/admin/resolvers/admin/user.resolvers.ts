@@ -15,20 +15,28 @@ const userResolvers = {
     async getAllUser(_: any, { input }: any, context: any) {
       try {
         const data = await checkAuth(context);
-        console.log(data);
 
-        const orgId = await getOrg(data.id);
-
-        const result2 = await db.query.alumniToOrganization.findMany({});
-        const result = await db.query.alumniToOrganization.findMany({
-          where: (user, { eq }) => eq(user.organizationId, data.id),
+        const findUser = await db.query.users.findFirst({
+          where: (user, { eq }) => eq(user.id, data.id),
           with: {
-            alumni: true,
+            organization: {
+              with: {},
+            },
           },
         });
 
-        console.log(result, result2);
-        // return result;
+        const result = await db.query.alumniToOrganization.findMany({
+          where: (user, { eq }) =>
+            eq(user.organizationId, findUser.organization.id),
+          with: {
+            alumni: true,
+            alumniKyc: true,
+          },
+        });
+
+        console.log(result);
+
+        return result;
       } catch (error) {
         console.log(error);
         throw error;

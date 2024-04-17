@@ -60,6 +60,7 @@ const groupTypes = gql`
     getGroupBySlugPeople(input: slug!): [alumni]
     getGroupFeed(input: typeid!): [feed]
     getAllAlumniFeed(input: typeid!): [feed]
+    getAllUserFeed: [feed]
     getAllGroupPeople(input: typeid!): [groupMember]
     getAllGroupRequest(input: typeid!): [groupMember]
     getAllGroupEvents(input: typeid!): [event]

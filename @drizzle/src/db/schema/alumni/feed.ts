@@ -14,18 +14,28 @@ import {
 import { groups } from "./groups";
 import { alumniToOrganization } from "./alumni";
 import { organization } from "../tenant";
+import { jobs } from "./jobs";
+import { marketPlace } from "./marketPlace";
 
-export const feedForm = pgEnum("feedForm", ["group", "events"]);
+export const feedForm = pgEnum("feedForm", [
+  "group",
+  "events",
+  "jobs",
+  "marketPlace",
+]);
 
 export const alumniFeed = pgTable("alumniFeed", {
   id: uuid("id").defaultRandom().primaryKey(),
   alumniId: uuid("alumni_id").notNull(),
   groupId: uuid("group_id"),
-  orgId: uuid("org_id").notNull(),
+  organization: uuid("org_id").notNull(),
   description: text("description").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`),
   feedForm: feedForm("feedForm").notNull(),
+  eventId: uuid("event_id"),
+  jobs: uuid("jobs_id"),
+  marketPlace: uuid("marketPlace_id"),
 });
 
 export const feedRelations = relations(alumniFeed, ({ one, many }) => ({
@@ -40,8 +50,16 @@ export const feedRelations = relations(alumniFeed, ({ one, many }) => ({
     references: [alumniToOrganization.alumniId],
   }),
   organization: one(organization, {
-    fields: [alumniFeed.orgId],
+    fields: [alumniFeed.organization],
     references: [organization.id],
+  }),
+  job: one(jobs, {
+    fields: [alumniFeed.jobs],
+    references: [jobs.id],
+  }),
+  marketPlace: one(marketPlace, {
+    fields: [alumniFeed.marketPlace],
+    references: [marketPlace.id],
   }),
 }));
 

@@ -19,7 +19,6 @@ const adminResolvers = {
       try {
         const data = await checkAuth(context);
         const token = context.headers?.authorization;
-        console.log(token);
 
         const check = await db.query.loginSession.findFirst({
           where: (session, { eq }) =>
@@ -33,11 +32,12 @@ const adminResolvers = {
               http: { status: 403 },
             },
           });
+        } else {
+          return {
+            status: true,
+            id: data.id,
+          };
         }
-        return {
-          status: true,
-          id: data.id,
-        };
       } catch (error) {
         throw error;
       }

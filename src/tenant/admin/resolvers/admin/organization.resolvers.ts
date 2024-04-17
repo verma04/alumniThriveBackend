@@ -8,6 +8,8 @@ import {
   domain,
   organization,
   profileInfo,
+  razorpay,
+  stripe,
   theme,
   users,
 } from "../../../../../@drizzle/src/db/schema";
@@ -124,6 +126,14 @@ const organizationResolvers = {
           organizationId: createOrganization[0]?.id,
         });
 
+        await db.insert(razorpay).values({
+          isEnabled: false,
+          organization: createOrganization[0]?.id,
+        });
+        await db.insert(stripe).values({
+          isEnabled: false,
+          organization: createOrganization[0]?.id,
+        });
         await db
           .insert(domain)
           .values({
