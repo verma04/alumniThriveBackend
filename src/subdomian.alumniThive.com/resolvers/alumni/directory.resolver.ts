@@ -106,8 +106,6 @@ const directoryResolvers = {
 
         const org_id = await domainCheck(context);
 
-        console.log(input);
-
         if (input.id === id) {
           return new GraphQLError(
             "SomeThing went Wrong, Please try agin after some Time",
@@ -179,7 +177,6 @@ const directoryResolvers = {
             eq(alumniRequest.senderId, input.id)
           ),
         });
-        console.log(find);
 
         if (!find) {
           return new GraphQLError("No Request Found", {

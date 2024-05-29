@@ -8,3 +8,6 @@ export * from "./marketPlace";
 export * from "./association";
 export * from "./challenges";
 export * from "./courses";
+export * from "./mentor";
+export * from "./alumniStories";
+export * from "./campaign";

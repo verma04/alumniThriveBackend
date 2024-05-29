@@ -36,7 +36,6 @@ const groupResolvers = {
         const { id } = await checkAuth(context);
 
         const org_id = await domainCheck(context);
-        console.log(org_id);
 
         const set = await db
           .update(alumniToOrganization)

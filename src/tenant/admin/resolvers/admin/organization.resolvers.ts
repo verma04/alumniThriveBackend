@@ -15,6 +15,7 @@ import {
 } from "../../../../../@drizzle/src/db/schema";
 import { eq } from "drizzle-orm";
 import upload from "../../utils/upload/upload.utils";
+import { userOrg } from "./mentorship.resolvers";
 
 const organizationResolvers = {
   Query: {
@@ -58,6 +59,39 @@ const organizationResolvers = {
         return {
           success: true,
         };
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+
+    async getCurrency(_: any, { input }: any, context: any) {
+      try {
+        const data = await checkAuth(context);
+
+        const currency = await db.query.currency.findMany();
+
+        return currency;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+
+    async getOrganizationCurrency(_: any, { input }: any, context: any) {
+      try {
+        const data = await checkAuth(context);
+
+        const orgId = await userOrg(data.id);
+
+        const organizationCu = await db.query.organization.findFirst({
+          where: (user, { eq }) => eq(organization.id, orgId),
+          with: {
+            currency: true,
+          },
+        });
+
+        return organizationCu.currency;
       } catch (error) {
         console.log(error);
         throw error;
@@ -169,6 +203,26 @@ const organizationResolvers = {
 
         console.log(updateTheme);
         return updateTheme[0];
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+
+    async updateCurrency(_: any, { input }: any, context: any) {
+      try {
+        const data = await checkAuth(context);
+
+        const orgId = await userOrg(data.id);
+
+        const updatedCurrency = await db
+          .update(organization)
+          .set({ currency: input.id })
+          .where(eq(organization.id, orgId))
+          .returning();
+        console.log(updatedCurrency);
+
+        return updatedCurrency[0];
       } catch (error) {
         console.log(error);
         throw error;

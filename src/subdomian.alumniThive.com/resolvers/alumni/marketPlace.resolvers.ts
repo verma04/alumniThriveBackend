@@ -8,8 +8,9 @@ import {
   marketPlaceImages,
 } from "../../../../@drizzle/src/db/schema";
 import slugify from "slugify";
-import generateSlug from "../../../tenant/admin/utils/slug/generateSlug.utils";
+
 import uploadImageToFolder from "../../../tenant/admin/utils/upload/uploadImageToFolder.utils";
+import generateSlug from "../../utils/slug/generateSlug";
 
 const marketPlaceResolvers = {
   Query: {
@@ -46,15 +47,8 @@ const marketPlaceResolvers = {
           `${org_id}/marketPlace`,
           input.images
         );
-        console.log(input.title);
-        let slug = slugify(input.title, {
-          replacement: "-",
-          remove: /[*+~.()'"!:,@]/g,
-          lower: true,
-          strict: false,
-          locale: "vi",
-          trim: true,
-        });
+
+        let slug = generateSlug(input?.title);
         const findListing = await db.query.marketPlace.findFirst({
           where: (marketPlace, { eq }) => eq(marketPlace.slug, slug),
         });
@@ -106,7 +100,7 @@ const marketPlaceResolvers = {
         const { id } = await checkAuth(context);
 
         const org_id = await domainCheck(context);
-        const slug = await generateSlug();
+        const slug = await generateSlug(input.id);
         const form = await db.query.jobs.findFirst({
           where: and(eq(jobs.id, input.id)),
         });

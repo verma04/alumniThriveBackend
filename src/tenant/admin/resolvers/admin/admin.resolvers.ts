@@ -38,6 +38,8 @@ const adminResolvers = {
             id: data.id,
           };
         }
+
+        console.log(check);
       } catch (error) {
         throw error;
       }

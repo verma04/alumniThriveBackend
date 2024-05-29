@@ -135,8 +135,9 @@ const feedResolvers = {
 
         const find = await db.query.alumniFeed.findMany({
           where: and(eq(alumniFeed.organization, org_id)),
-
+          orderBy: (alumniFeed, { desc }) => [desc(alumniFeed.createdAt)],
           with: {
+            media: true,
             reactions: {
               with: {
                 alumni: {
@@ -162,6 +163,7 @@ const feedResolvers = {
 
         const feed = await find.map((t) => ({
           id: t.id,
+          media: t.media,
           description: t.description,
           createdAt: t.createdAt,
           user: t?.alumni?.alumni,

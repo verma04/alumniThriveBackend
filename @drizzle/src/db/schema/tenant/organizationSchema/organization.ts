@@ -11,7 +11,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { domain } from "../domain/domain";
-import { users } from "../admin";
+import { currency, users } from "../admin";
 import {
   alumni,
   alumniToOrganization,
@@ -34,6 +34,7 @@ export const organization = pgTable("organization", {
   userId: uuid("user_id"),
   favicon: text("favicon"),
   color: text("color"),
+  currency: uuid("currency_id"),
 });
 
 export const organizationRelations = relations(
@@ -51,6 +52,11 @@ export const organizationRelations = relations(
     user: one(users, {
       fields: [organization.userId],
       references: [users.id],
+    }),
+
+    currency: one(currency, {
+      fields: [organization.currency],
+      references: [currency.id],
     }),
   })
 );

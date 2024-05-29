@@ -22,8 +22,6 @@ import domainCheck from "../../../commanUtils/domianCheck";
 const organizationResolvers = {
   Query: {
     async checkDomain(_: any, { domain }: any, context: any) {
-      console.log(domain);
-
       const findDomain = await db.query.domain.findFirst({
         where: (d, { eq }) =>
           eq(d.domain, domain?.split(".")[0]?.replace("http://", "")),
@@ -65,7 +63,6 @@ const organizationResolvers = {
           },
         });
 
-        console.log(findOrg);
         const findUser = await db.query.alumni.findFirst({
           where: (d, { eq }) => eq(d.id, findOrg.alumniId),
         });
@@ -79,6 +76,26 @@ const organizationResolvers = {
           isRequested: findOrg.isRequested,
           avatar: findUser.avatar,
         };
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+
+    async getCurrency(_: any, {}: any, context: any) {
+      try {
+        const data = await checkAuth(context);
+
+        const org_id = await domainCheck(context);
+
+        const organizationCu = await db.query.organization.findFirst({
+          where: (user, { eq }) => eq(organization.id, org_id),
+          with: {
+            currency: true,
+          },
+        });
+
+        return organizationCu.currency;
       } catch (error) {
         console.log(error);
         throw error;

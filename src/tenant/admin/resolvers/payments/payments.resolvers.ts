@@ -34,6 +34,8 @@ const paymentResolvers = {
           },
         });
 
+        console.log(findUser);
+
         return {
           enabledRazorpay: findUser?.organization?.razorpay?.isEnabled,
           enabledStripe: findUser?.organization?.stripe?.isEnabled,
@@ -59,7 +61,7 @@ const paymentResolvers = {
             organization: true,
           },
         });
-
+        console.log(input);
         if (input.enabledRazorpay) {
           await db
             .update(razorpay)

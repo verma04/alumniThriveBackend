@@ -11,6 +11,13 @@ const organizationTypes = gql`
     success: Boolean
   }
 
+  type currency {
+    id: ID
+    name: String
+    symbol: String
+    cc: String
+  }
+
   type token {
     id: ID
   }
@@ -38,8 +45,10 @@ const organizationTypes = gql`
     domain: String!
   }
   type Query {
+    getCurrency: [currency]
     getOrganization: user
     checkDomain(input: domainQuery): success
+    getOrganizationCurrency: currency
   }
   type organizationTheme {
     colorPrimary: String
@@ -56,10 +65,14 @@ const organizationTypes = gql`
     borderRadius: Int
     colorBgContainer: String
   }
+  input inputCurrency {
+    id: ID
+  }
 
   type Mutation {
     registerOrganization(input: registerOrganizationInput): success
     changeThemeColor(input: InputTheme): organizationTheme
+    updateCurrency(input: inputCurrency): currency
   }
 `;
 
