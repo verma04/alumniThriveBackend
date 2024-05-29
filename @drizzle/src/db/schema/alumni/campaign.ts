@@ -14,10 +14,7 @@ import {
 import { alumniToOrganization } from "./alumni";
 import { organization } from "../tenant";
 
-export const campaignTypeEnum = pgEnum("CampaignType", [
-  "oneTime",
-  "recurring",
-]);
+export const campaignTypeEnum = pgEnum("CampaignType", ["specific", "open"]);
 
 export const campaignCategory = pgTable("campaignCategory", {
   id: uuid("id").defaultRandom().primaryKey(),
