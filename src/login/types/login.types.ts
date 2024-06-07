@@ -25,11 +25,16 @@ const loginTypes = gql`
     logo: String
     theme: organizationTheme
   }
+  input inputOtpDetails {
+    id: ID!
+  }
 
   type Query {
     getUser: user
     checkProfile: success
     checkDomain(domain: String): Organization
+    checkOrganization(token: String!): Organization
+    checkOtpDetails(input: inputOtpDetails): user
   }
 
   input googleLogin {
@@ -40,6 +45,18 @@ const loginTypes = gql`
     domain: String!
   }
 
+  input emailLogin {
+    email: String!
+    domain: String!
+  }
+
+  input inputOtpLogin {
+    email: String!
+    domain: String!
+  }
+  type otp {
+    id: ID
+  }
   input profile {
     country: String!
     language: String!
@@ -88,10 +105,17 @@ const loginTypes = gql`
     education: [education]
     experience: [experience]
   }
+  input otpInput {
+    id: ID!
+    otp: String!
+  }
 
   type Mutation {
     loginByGoogle(input: googleLogin): token
     createProfile(input: profileCreation): success
+    loginByEmail(input: emailLogin): otp
+
+    loginByOtp(input: otpInput): token
   }
 `;
 

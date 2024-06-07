@@ -175,22 +175,6 @@ const adminResolvers = {
         }
       } catch (error) {
         console.log(error);
-        // if (error.code === "23505") {
-        //   console.log(error.code);
-        //   throw new GraphQLError("Email Already exists", {
-        //     extensions: {
-        //       code: "NOT FOUND",
-        //       http: { status: 400 },
-        //     },
-        //   });
-        // } else {
-        //   throw new GraphQLError("Something went wrong", {
-        //     extensions: {
-        //       code: "SOMETHING WENT WRONG",
-        //       http: { status: 400 },
-        //     },
-        //   });
-        // }
       }
     },
 

@@ -34,6 +34,26 @@ export const campaignCategoryRelations = relations(
   })
 );
 
+export const campaignAmountRecommendation = pgTable(
+  "campaignAmountRecommendation",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    price: numeric("price").notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`),
+    organization: uuid("org_id").notNull(),
+  }
+);
+export const campaignAmountRecommendationRelations = relations(
+  campaignAmountRecommendation,
+  ({ one, many }) => ({
+    organization: one(organization, {
+      fields: [campaignAmountRecommendation.organization],
+      references: [organization.id],
+    }),
+  })
+);
+
 export const campaignGallery = pgTable("fundCampaignGallery", {
   id: uuid("id").defaultRandom().primaryKey(),
   url: text("url").notNull(),
@@ -70,6 +90,7 @@ export const campaign = pgTable("fundCampaign", {
 
 export const campaignRelations = relations(campaign, ({ one, many }) => ({
   campaign: many(campaignGallery),
+
   user: one(alumniToOrganization, {
     fields: [campaign.user],
     references: [alumniToOrganization.alumniId],

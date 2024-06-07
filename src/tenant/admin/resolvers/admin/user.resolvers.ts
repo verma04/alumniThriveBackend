@@ -1,14 +1,6 @@
-import { eq } from "drizzle-orm";
 import { db } from "../../../../../@drizzle";
-import {
-  aboutAlumni,
-  alumni,
-  alumniKyc,
-  alumniProfile,
-  alumniToOrganization,
-} from "../../../../../@drizzle/src/db/schema";
+
 import checkAuth from "../../utils/auth/checkAuth.utils";
-import getOrg from "../../utils/getOrg.utils";
 
 const userResolvers = {
   Query: {

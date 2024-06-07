@@ -62,3 +62,12 @@ export interface profileCreation {
 export interface profileCreationInput {
   input: profileCreation;
 }
+
+export interface emailLogin {
+  email: string;
+  domain: string;
+}
+
+export interface emailLoginInput {
+  input: emailLogin;
+}

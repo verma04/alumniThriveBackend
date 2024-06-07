@@ -10,6 +10,7 @@ import {
   json,
   primaryKey,
   unique,
+  integer,
 } from "drizzle-orm/pg-core";
 import { organization } from "../tenant";
 import { events, eventsAttendees } from "./events";
@@ -37,6 +38,7 @@ export const alumniRelations = relations(alumni, ({ one, many }) => ({
   profileInfo: one(alumniProfile),
   aboutAlumni: one(aboutAlumni),
   alumni: many(alumniToOrganization),
+  otp: one(userOtp),
   resume: many(alumniToOrganization),
 }));
 
@@ -222,3 +224,20 @@ export const alumniRequestRelations = relations(
     }),
   })
 );
+
+export const userOtp = pgTable("userOtp", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  user: uuid("user_id").notNull(),
+  otp: text("otp").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`),
+  timeOfExpire: integer("timeOfExpire").default(10),
+  isExpired: boolean("isExpired").default(false),
+});
+
+export const userOtpRelations = relations(userOtp, ({ one }) => ({
+  user: one(alumni, {
+    fields: [userOtp.user],
+    references: [alumni.id],
+  }),
+}));

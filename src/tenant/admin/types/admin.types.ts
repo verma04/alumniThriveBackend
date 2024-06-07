@@ -64,7 +64,6 @@ const adminTypes = gql`
   }
   type Mutation {
     logoutUser: success
-
     logoutUserAllDevices: success
     loginAsAdmin(input: loginInput): token
     otpLogin(input: otpInput): jwtToken

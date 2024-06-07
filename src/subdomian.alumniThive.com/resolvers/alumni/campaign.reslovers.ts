@@ -82,6 +82,15 @@ const campaignResolvers = {
             ),
           with: {
             category: true,
+            user: {
+              with: {
+                alumni: {
+                  with: {
+                    aboutAlumni: true,
+                  },
+                },
+              },
+            },
           },
           orderBy: [desc(campaign.createdAt)],
         });

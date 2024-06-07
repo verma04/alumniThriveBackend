@@ -5,6 +5,7 @@ import { userResolvers } from "./admin/user.resolvers";
 import { paymentResolvers } from "./payments/payments.resolvers";
 import { mentorShipResolvers } from "./admin/mentorship.resolvers";
 import { alumniStoriesResolvers } from "./admin/alumnistories.resolvers";
+import { givingResolvers } from "./admin/giving.reslovers";
 const resolvers = {
   Upload: GraphQLUpload,
   Query: {
@@ -14,6 +15,7 @@ const resolvers = {
     ...paymentResolvers.Query,
     ...mentorShipResolvers.Query,
     ...alumniStoriesResolvers.Query,
+    ...givingResolvers.Query,
   },
   Mutation: {
     ...adminResolvers.Mutation,
@@ -22,6 +24,7 @@ const resolvers = {
     ...paymentResolvers.Mutation,
     ...mentorShipResolvers.Mutation,
     ...alumniStoriesResolvers.Mutation,
+    ...givingResolvers.Mutation,
   },
 };
 
