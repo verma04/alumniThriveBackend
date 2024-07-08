@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
-import { nanoid } from "nanoid";
+import jwt from 'jsonwebtoken'
+import { nanoid } from 'nanoid'
 const generateSlug = async () => {
-  return nanoid(10);
-};
+    return nanoid(10)
+}
 
-export default generateSlug;
+export default generateSlug

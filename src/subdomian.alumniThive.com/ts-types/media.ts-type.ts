@@ -1,7 +1,7 @@
 export interface media {
-  group: string;
+    group: string
 }
 
 export interface getMedia {
-  input: media;
+    input: media
 }

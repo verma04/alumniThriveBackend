@@ -16,17 +16,17 @@
 //   dialect: "postgresql",
 // });
 
-import * as dotenv from "dotenv";
-import { defineConfig } from "drizzle-kit";
+import * as dotenv from 'dotenv'
+import { defineConfig } from 'drizzle-kit'
 dotenv.config({
-  path: ".env",
-});
+    path: '.env',
+})
 export default defineConfig({
-  schema: "./@drizzle/src/db/schema",
-  out: "./drizzle",
-  dialect: "postgresql",
+    schema: './@drizzle/src/db/schema',
+    out: './drizzle',
+    dialect: 'postgresql',
 
-  dbCredentials: {
-    url: process.env.POSTGRES_DATABASE_URL as string,
-  },
-});
+    dbCredentials: {
+        url: process.env.POSTGRES_DATABASE_URL as string,
+    },
+})

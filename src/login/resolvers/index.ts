@@ -1,12 +1,12 @@
-import { loginResolvers } from "./admin/login.resolvers";
+import { loginResolvers } from './admin/login.resolvers'
 
 const resolvers = {
-  Query: {
-    ...loginResolvers.Query,
-  },
-  Mutation: {
-    ...loginResolvers.Mutation,
-  },
-};
+    Query: {
+        ...loginResolvers.Query,
+    },
+    Mutation: {
+        ...loginResolvers.Mutation,
+    },
+}
 
-export default resolvers;
+export default resolvers

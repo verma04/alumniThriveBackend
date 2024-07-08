@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Html, Button } from "@react-email/components";
+import * as React from 'react'
+import { Html, Button } from '@react-email/components'
 
 export function Email(props) {
-  const { url } = props;
+    const { url } = props
 
-  return (
-    <Html lang="en">
-      <Button href={url}>Click me</Button>
-    </Html>
-  );
+    return (
+        <Html lang="en">
+            <Button href={url}>Click me</Button>
+        </Html>
+    )
 }

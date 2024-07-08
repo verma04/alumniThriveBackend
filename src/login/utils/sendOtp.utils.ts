@@ -1,22 +1,22 @@
-import { encryptToken } from "./crypto/jwt.crypto";
-import { encryptOtp } from "./crypto/otp.crypto";
-import { db } from "../../../@drizzle";
-import { userOtp } from "../../../@drizzle/src/db/schema";
+import { encryptToken } from './crypto/jwt.crypto'
+import { encryptOtp } from './crypto/otp.crypto'
+import { db } from '../../../@drizzle'
+import { userOtp } from '../../../@drizzle/src/db/schema'
 
 const sendOtp = async (check: any) => {
-  try {
-    var generateOpt = Math.floor(1000 + Math.random() * 9000);
-    console.log(generateOpt);
-    const encryptedOtp = await encryptOtp(generateOpt);
-    const data = await db
-      .insert(userOtp)
-      .values({ user: check.id, otp: encryptedOtp })
-      .returning();
+    try {
+        const generateOpt = Math.floor(1000 + Math.random() * 9000)
 
-    return data[0];
-  } catch (error) {
-    console.log(error);
-  }
-};
+        const encryptedOtp = await encryptOtp(generateOpt)
+        const data = await db
+            .insert(userOtp)
+            .values({ user: check.id, otp: encryptedOtp })
+            .returning()
 
-export default sendOtp;
+        return data[0]
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export default sendOtp

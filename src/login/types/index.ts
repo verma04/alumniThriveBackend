@@ -1,5 +1,5 @@
-import { loginTypes } from "./login.types";
+import { loginTypes } from './login.types'
 
-const types = [loginTypes];
+const types = [loginTypes]
 
-export default types;
+export default types

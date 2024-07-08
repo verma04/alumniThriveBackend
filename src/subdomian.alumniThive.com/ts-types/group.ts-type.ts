@@ -1,83 +1,88 @@
 enum type {
-  virtual = "virtual",
-  inPerson = "inPerson",
-  hybrid = "hybrid",
+    virtual = 'virtual',
+    inPerson = 'inPerson',
+    hybrid = 'hybrid',
 }
 
 enum reactionType {
-  like = "like",
-  celebrate = "celebrate",
-  support = "support",
-  love = "love",
-  insightful = "insightful",
-  funny = "funny",
+    like = 'like',
+    celebrate = 'celebrate',
+    support = 'support',
+    love = 'love',
+    insightful = 'insightful',
+    funny = 'funny',
 }
 enum visibility {
-  private = "private",
-  public = "public",
+    private = 'private',
+    public = 'public',
 }
 enum joiningConditions {
-  "anyoneCanJoin",
-  "adminOnlyAdd",
+    'anyoneCanJoin',
+    'adminOnlyAdd',
 }
 
 export interface group {
-  name: string;
-  privacy: visibility;
-  about: string;
-  groupType: type;
+    name: string
+    privacy: visibility
+    about: string
+    groupType: type
+    cover?: any
+    joiningCondition: any
+    theme: string
+    interest: string
+    tag: string[]
 }
 export interface id {
-  id: string;
-  type: reactionType;
+    id: string
+    type: reactionType
 }
 
 export interface addGroupInput {
-  input: group;
+    input: group
 }
 
 export interface invitationIds {
-  id: string[];
-  group: string;
+    id: string[]
+    group: string
 }
 export interface acceptInvitation {
-  group: string;
+    group: string
 }
 
 export interface invitationInput {
-  input: invitationIds;
+    input: invitationIds
 }
 
 export interface acceptInvitationInput {
-  input: invitationIds;
+    input: invitationIds
 }
 
 export interface slug {
-  slug: string;
+    slug: string
 }
 
 export interface groupSlug {
-  input: slug;
+    input: slug
 }
 
 export interface feed {
-  description: string;
-  groupId: string;
-  image: [any];
+    description: string
+    groupId: string
+    image: [any]
 }
 export interface groupFeed {
-  input: feed;
+    input: feed
 }
 
 export interface feedLike {
-  input: id;
+    input: id
 }
 export interface request {
-  alumniId: string;
-  groupID: string;
-  accept: boolean;
+    alumniId: string
+    groupID: string
+    accept: boolean
 }
 
 export interface acceptRequestGroup {
-  input: request;
+    input: request
 }
