@@ -7,8 +7,7 @@ const upload = async (file) => {
         accessKeyId: process.env.SPACES_KEY,
         secretAccessKey: process.env.SPACES_SECRET,
     })
-    const { stream, filename, mimetype, encoding, createReadStream } =
-        await file
+    const { stream, filename, mimetype, createReadStream } = await file
 
     console.log(file)
 

@@ -10,7 +10,7 @@ const jobsResolvers = {
     Query: {
         async getAllJobs(_: any, { input }: any, context: any) {
             try {
-                const { id } = await checkAuth(context)
+                await checkAuth(context)
 
                 const org_id = await domainCheck(context)
 
@@ -29,7 +29,6 @@ const jobsResolvers = {
                     },
                 })
 
-                console.log(allJobs)
                 return allJobs
             } catch (error) {
                 console.log(error)
@@ -192,31 +191,6 @@ const jobsResolvers = {
                 const org_id = await domainCheck(context)
 
                 console.log(input.id)
-
-                // const slug = await generateSlug();
-                // const form = await db.query.jobs.findFirst({
-                //   where: and(eq(jobs.id, input.id)),
-                // });
-
-                // const duplicateJob = await db
-                //   .insert(jobs)
-                //   .values({
-                //     postedBy: form.postedBy,
-                //     organization: form.organization,
-                //     jobTitle: `${form.jobTitle}-copy-1`,
-                //     jobType: form.jobType,
-                //     company: form.company,
-                //     salary: form.salary,
-                //     slug,
-                //     description: form.description,
-                //     location: form.location,
-                //     workplaceType: form.workplaceType,
-                //     experience: form.experience,
-                //     tag: form.tag,
-                //   })
-                //   .returning();
-
-                // return duplicateJob;
             } catch (error) {
                 console.log(error)
                 throw error

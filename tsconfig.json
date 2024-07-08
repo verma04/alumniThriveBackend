@@ -8,6 +8,10 @@
         "moduleResolution": "node",
         "esModuleInterop": true,
         "jsx": "react",
-        "types": ["node"]
+        "types": ["node"],
+        "paths": {
+      "@/*": ["./src/*"],
+   
+    },
     }
 }
