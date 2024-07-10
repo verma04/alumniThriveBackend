@@ -7,7 +7,7 @@ const domainCheck = async (domain: any) => {
         ?.split('.')[0]
         ?.replace('http://', '')
 
-    console.log(checkDomain)
+
 
     const findDomain = await db.query.domain.findFirst({
         where: (user, { eq }) => eq(user.domain, checkDomain),

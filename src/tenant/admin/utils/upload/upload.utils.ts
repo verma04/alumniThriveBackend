@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import AWS from 'aws-sdk'
+require('aws-sdk/lib/maintenance_mode_message').suppress = true;
 const upload = async (file) => {
     const s3 = new AWS.S3({
         endpoint: 'blr1.digitaloceanspaces.com',

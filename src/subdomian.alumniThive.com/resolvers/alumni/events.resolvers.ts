@@ -2,7 +2,7 @@ import { and, eq, ilike, not, or, sql } from 'drizzle-orm'
 import { db } from '../../../../@drizzle'
 import domainCheck from '../../../commanUtils/domianCheck'
 import {
-    addAgenda,
+
     addAgendaProps,
     addMediaProps,
     addSpeakerProps,
@@ -33,10 +33,10 @@ import {
 import { GraphQLError } from 'graphql'
 import slugify from 'slugify'
 import upload from '../../utils/upload/upload.utils'
-import { group, groupSlug } from '../../ts-types/group.ts-type'
+import { groupSlug } from '../../ts-types/group.ts-type'
 import uploadImageToFolder from '../../../tenant/admin/utils/upload/uploadImageToFolder.utils'
 const Razorpay = require('razorpay')
-const stripe = require('stripe')
+
 
 const eventCondition = ({ mode, cost, org_id, search }) => {
     const conditions = and(
@@ -46,9 +46,9 @@ const eventCondition = ({ mode, cost, org_id, search }) => {
             !search || search?.length === 0
                 ? not(ilike(events.name, `%${null}%`))
                 : or(
-                      ilike(events.name, `%${search}%`),
-                      ilike(events.details, `%${search}%`)
-                  ),
+                    ilike(events.name, `%${search}%`),
+                    ilike(events.details, `%${search}%`)
+                ),
             mode ? eq(events.eventType, mode) : eq(events.organization, org_id),
             cost
                 ? eq(eventsPayments.eventCost, cost)
@@ -60,7 +60,7 @@ const eventCondition = ({ mode, cost, org_id, search }) => {
 
 const eventsResolvers = {
     Query: {
-        async getEventsType(_: any, {}: any, context: any) {
+        async getEventsType(_: any, { }: any, context: any) {
             try {
                 const { id } = await checkAuth(context)
 
@@ -73,7 +73,7 @@ const eventsResolvers = {
             }
         },
 
-        async getEventCostType(_: any, {}: any, context: any) {
+        async getEventCostType(_: any, { }: any, context: any) {
             try {
                 const { id } = await checkAuth(context)
 

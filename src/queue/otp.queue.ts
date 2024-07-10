@@ -13,6 +13,7 @@ query Query($input: inputOtpEmail) {
 `
 const sendEmailOtp = async (email, otp) => {
     try {
+        console.log(otp)
         const data = client
             .query(QUERY, {
                 input: {
