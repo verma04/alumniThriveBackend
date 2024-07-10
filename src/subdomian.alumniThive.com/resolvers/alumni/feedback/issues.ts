@@ -45,7 +45,7 @@ const issuesResolvers = {
                     })
                     .from(issues)
                     .leftJoin(alumni, eq(issues.user, alumni.id))
-                    .fullJoin(issueComment, eq(issues.id, issueComment.issue))
+
                     .where(conditions)
                     .offset((offset - 1) * limit)
                     .limit(9)

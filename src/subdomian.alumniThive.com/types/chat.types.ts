@@ -4,16 +4,48 @@ import { gql } from 'apollo-server-core'
 const chatTypes = gql`
     scalar Upload
 
-    type Subscription {
-        numberIncremented: Int
+    input chatID {
+        userID: ID
     }
-    # input kyc {
-    #   affliction: [String]!
-    #   referralSource: [String]!
-    #   comment: String!
-    #   agreement: Boolean!
-    #   identificationNumber: String
-    # }
+    input inputSendMessage {
+        chatId: ID!
+        content: String!
+    }
+
+    input inputChat {
+        userID: ID
+    }
+
+    input messageID {
+        id: ID
+    }
+
+    type chat {
+        id: ID
+    }
+    type sender {
+        id: ID
+        firstName: String
+        avatar: String
+        lastName: String
+    }
+    type messages {
+        id: ID
+        content: String
+        sender: sender
+        marketPlace: MarketPlace
+        messageType: String
+    }
+    type Query {
+        getAllMessages(input: messageID): [messages]
+    }
+    type Mutation {
+        sendMessageInChat(input: inputSendMessage): [chat]
+        startChat(input: chatID): chat
+    }
+    type Subscription {
+        message(id: ID!): messages
+    }
 `
 
 export { chatTypes }

@@ -14,6 +14,7 @@ import {
 import { groups } from './groups'
 import { alumniToOrganization } from './alumni'
 import { organization } from '../tenant'
+import { messages } from './chat'
 export const conditionEnum = pgEnum('conditionEnum', [
     'new',
     'used-like now',
@@ -61,6 +62,7 @@ export const marketPlaceRelations = relations(marketPlace, ({ one, many }) => ({
         fields: [marketPlace.category],
         references: [marketPlaceCategory.id],
     }),
+    messages: many(messages),
 }))
 
 export const marketPlaceCategory = pgTable('marketPlaceCategory', {

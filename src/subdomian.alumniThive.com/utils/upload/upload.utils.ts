@@ -11,8 +11,6 @@ const upload = async (file) => {
     const { stream, filename, mimetype, encoding, createReadStream } =
         await file
 
-    console.log(file)
-
     const date = moment().format('YYYYMMDD')
     const randomString = Math.random().toString(36).substring(2, 7)
 

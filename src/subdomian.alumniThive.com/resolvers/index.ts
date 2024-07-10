@@ -33,6 +33,7 @@ const resolvers = {
         ...campaignResolvers.Query,
         ...profileResolvers.Query,
         ...helpResolvers.Query,
+        ...chatResolvers.Query,
     },
 
     Mutation: {
@@ -52,6 +53,7 @@ const resolvers = {
         ...campaignResolvers.Mutation,
         ...profileResolvers.Mutation,
         ...helpResolvers.Mutation,
+        ...chatResolvers.Mutation,
     },
     Subscription: {
         ...chatResolvers.Subscription,

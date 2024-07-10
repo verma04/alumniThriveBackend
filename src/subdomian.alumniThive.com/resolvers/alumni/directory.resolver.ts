@@ -107,7 +107,7 @@ const directoryResolvers = {
                 const { id } = await checkAuth(context)
 
                 const org_id = await domainCheck(context)
-                console.log(input)
+
                 const user = await db.query.alumniToOrganization.findFirst({
                     where: and(eq(alumniToOrganization.alumniId, input.id)),
 
@@ -120,7 +120,7 @@ const directoryResolvers = {
                     },
                 })
 
-                return user.alumni
+                return { ...user.alumni, myProfile: input.id === id }
             } catch (error) {
                 console.log(error)
                 throw error

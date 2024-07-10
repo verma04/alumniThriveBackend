@@ -9,7 +9,7 @@ import * as dotenv from 'dotenv'
 import { WebSocketServer } from 'ws'
 import { useServer } from 'graphql-ws/lib/use/ws'
 dotenv.config()
-
+import bodyParser from 'body-parser'
 const {
     graphqlUploadExpress, // A Koa implementation is also exported.
 } = require('graphql-upload')
@@ -67,6 +67,8 @@ const httpServer = http.createServer(app)
     // Ensure we wait for our server to start
     await server.start()
     app.use(graphqlUploadExpress())
+    app.use(bodyParser.json({ limit: '50mb' }))
+    app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
     // Set up our Express middleware to handle CORS, body parsing,
     // and our expressMiddleware function.
     app.use(

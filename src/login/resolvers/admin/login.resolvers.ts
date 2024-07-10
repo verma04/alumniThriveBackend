@@ -161,6 +161,7 @@ const loginResolvers = {
                         token: generate,
                     }
                 }
+
                 if (!user) {
                     const data = await db
                         .insert(alumni)

@@ -1,16 +1,19 @@
-import { and, eq } from 'drizzle-orm'
+import { and, eq, or } from 'drizzle-orm'
 import { db } from '../../../../@drizzle'
 import domainCheck from '../../../commanUtils/domianCheck'
 import checkAuth from '../../utils/auth/checkAuth.utils'
 import {
+    chat,
     jobs,
     marketPlace,
     marketPlaceImages,
+    messages,
 } from '../../../../@drizzle/src/db/schema'
 import slugify from 'slugify'
 
 import uploadImageToFolder from '../../../tenant/admin/utils/upload/uploadImageToFolder.utils'
 import generateSlug from '../../utils/slug/generateSlug'
+import { GraphQLError } from 'graphql'
 
 const marketPlaceResolvers = {
     Query: {
@@ -26,9 +29,15 @@ const marketPlaceResolvers = {
                         eq(marketPlace.organization, org_id),
                     with: {
                         images: true,
+                        postedBy: {
+                            with: {
+                                alumni: true,
+                            },
+                        },
                     },
                 })
 
+                console.log(list)
                 return list
             } catch (error) {
                 console.log(error)
@@ -97,72 +106,60 @@ const marketPlaceResolvers = {
             }
         },
 
-        async duplicateJob(_: any, { input }: any, context: any) {
+        async contactMarketPlace(_: any, { input }: any, context: any) {
             try {
                 const { id } = await checkAuth(context)
 
-                const org_id = await domainCheck(context)
-                const slug = await generateSlug(input.id)
-                const form = await db.query.jobs.findFirst({
-                    where: and(eq(jobs.id, input.id)),
+                console.log(input)
+
+                if (id === input.userId) {
+                    return new GraphQLError('Action not Allowed', {
+                        extensions: {
+                            code: 400,
+                            http: { status: 400 },
+                        },
+                    })
+                }
+
+                const checkChat = await db.query.chat.findFirst({
+                    where: and(
+                        or(eq(chat.user1, input.userId), eq(chat.user1, id)),
+                        or(eq(chat.user2, id), eq(chat.user2, input.userId))
+                    ),
                 })
 
-                const duplicateJob = await db
-                    .insert(jobs)
+                if (checkChat) {
+                    console.log(checkChat)
+
+                    const newChat = await db
+                        .insert(messages)
+                        .values({
+                            chatId: checkChat.id,
+                            content: 'Information of this listing',
+                            senderId: id,
+                            marketPlace: input.listingId,
+                            messageType: 'marketPlace',
+                        })
+                        .returning()
+
+                    const details = await db.query.messages.findFirst({
+                        where: and(eq(messages.id, newChat[0].id)),
+                        with: {
+                            sender: true,
+                        },
+                    })
+
+                    return checkChat
+                }
+
+                const newChat = await db
+                    .insert(chat)
                     .values({
-                        postedBy: form.postedBy,
-                        organization: form.organization,
-                        jobTitle: `${form.jobTitle}-copy-1`,
-                        jobType: form.jobType,
-                        company: form.company,
-                        salary: form.salary,
-                        slug,
-                        description: form.description,
-                        location: form.location,
-                        workplaceType: form.workplaceType,
-                        experience: form.experience,
-                        tag: form.tag,
+                        user1: id,
+                        user2: input.userID,
                     })
                     .returning()
-
-                return duplicateJob
-            } catch (error) {
-                console.log(error)
-                throw error
-            }
-        },
-        async applyJob(_: any, { input }: any, context: any) {
-            try {
-                const { id } = await checkAuth(context)
-
-                const org_id = await domainCheck(context)
-
-                console.log(input.id)
-
-                // const slug = await generateSlug();
-                // const form = await db.query.jobs.findFirst({
-                //   where: and(eq(jobs.id, input.id)),
-                // });
-
-                // const duplicateJob = await db
-                //   .insert(jobs)
-                //   .values({
-                //     postedBy: form.postedBy,
-                //     organization: form.organization,
-                //     jobTitle: `${form.jobTitle}-copy-1`,
-                //     jobType: form.jobType,
-                //     company: form.company,
-                //     salary: form.salary,
-                //     slug,
-                //     description: form.description,
-                //     location: form.location,
-                //     workplaceType: form.workplaceType,
-                //     experience: form.experience,
-                //     tag: form.tag,
-                //   })
-                //   .returning();
-
-                // return duplicateJob;
+                console.log(newChat)
             } catch (error) {
                 console.log(error)
                 throw error

@@ -30,6 +30,7 @@ const directoryTypes = gql`
 
         isRequestedUser: isRequestedUser
         isFollowing: Boolean
+        myProfile: Boolean
     }
     input userDetails {
         id: ID!

@@ -4,7 +4,15 @@ import { gql } from 'apollo-server-core'
 const marketPlaceTypes = gql`
     scalar Upload
 
+    type postedUser {
+        id: ID
+    }
+
+    type postedBy {
+        alumni: postedUser
+    }
     type MarketPlace {
+        id: ID
         brand: String
         category: String
         condition: String
@@ -16,6 +24,7 @@ const marketPlaceTypes = gql`
         location: String
         createdAt: Date
         currency: String
+        postedBy: postedBy
     }
     type images {
         url: String
@@ -53,8 +62,14 @@ const marketPlaceTypes = gql`
         slug: String!
     }
 
+    input contactInput {
+        listingId: ID!
+        userId: ID!
+    }
+
     type Mutation {
         postListing(input: marketPlace): [MarketPlace]
+        contactMarketPlace(input: contactInput): chat
     }
     type Query {
         getAllMarketPlaceListing: [MarketPlace]
