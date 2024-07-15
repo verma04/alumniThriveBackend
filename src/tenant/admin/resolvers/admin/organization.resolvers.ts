@@ -116,7 +116,11 @@ const organizationResolvers = {
                 } = input
                 const data = await checkAuth(context)
 
-                const uploadedLogo = await upload(logo)
+                let uploadedLogo 
+                
+                if(logo) {
+               uploadedLogo = await upload(logo)
+                }
 
                 const checkUser = await db.query.users.findFirst({
                     where: (user, { eq }) => eq(user.id, data?.id),
@@ -153,7 +157,7 @@ const organizationResolvers = {
                         address,
                         category,
                         timeZone,
-                        logo: uploadedLogo,
+                        logo: uploadedLogo ? uploadedLogo : "Thrico_LogoMark_Color.png",
                         organizationName,
                         website,
                         userId: checkUser.id,
