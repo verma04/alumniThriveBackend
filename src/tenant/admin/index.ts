@@ -10,12 +10,10 @@ import { GraphQLError } from 'graphql'
 dotenv.config()
 
 const {
-    GraphQLUpload,
+    
     graphqlUploadExpress, // A Koa implementation is also exported.
 } = require('graphql-upload')
 import {
-    createEnvelopQueryValidationPlugin,
-    constraintDirectiveTypeDefs,
     constraintDirective,
 } from 'graphql-constraint-directive'
 const { makeExecutableSchema } = require('@graphql-tools/schema')
@@ -25,14 +23,16 @@ interface MyContext {
     token?: string
 }
 
-// Required logic for integrating with Express
-const app = express()
+try {
+    const app = express()
 // Our httpServer handles incoming requests to our Express app.
 // Below, we tell Apollo Server to "drain" this httpServer,
 // enabling our servers to shut down gracefully.
-const httpServer = http.createServer(app)
+const httpServer = http.createServer(app);
 
-;(async function () {
+
+
+(async function () {
     // Same ApolloServer initialization as before, plus the drain plugin
     // for our httpServer.
     const schema = makeExecutableSchema({
@@ -82,3 +82,10 @@ const httpServer = http.createServer(app)
     )
     console.log(`🚀 Server ready at ${process.env.AMIN_PORT}`)
 })()
+} catch (error) {
+
+    console.log(error)
+    
+}
+// Required logic for integrating with Express
+
