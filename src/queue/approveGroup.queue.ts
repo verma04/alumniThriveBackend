@@ -1,7 +1,7 @@
 import { Client, cacheExchange, fetchExchange } from '@urql/core'
 import { db } from '../@drizzle'
 const client = new Client({
-    url: 'http://localhost:1000',
+    url: process.env.QUEUE_PORT,
     exchanges: [cacheExchange, fetchExchange],
 })
 

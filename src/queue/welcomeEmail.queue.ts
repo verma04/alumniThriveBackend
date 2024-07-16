@@ -1,6 +1,6 @@
 import { Client, cacheExchange, fetchExchange } from '@urql/core'
 const client = new Client({
-    url: 'http://localhost:1000',
+    url: process.env.QUEUE_PORT,
     exchanges: [cacheExchange, fetchExchange],
 })
 

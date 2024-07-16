@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@urql/core");
 const client = new core_1.Client({
-    url: 'http://localhost:1000',
+    url: process.env.QUEUE_PORT,
     exchanges: [core_1.cacheExchange, core_1.fetchExchange],
 });
 const QUERY = `
