@@ -18,7 +18,8 @@
         "format:write": "prettier --write .",
         "lint:check": "eslint .",
         "lint:fix": "eslint --fix .",
-        "admin": "nodemon dist/src/tenant/admin/index"
+        "admin": "nodemon dist/src/tenant/admin/index",
+         "user": "nodemon dist/src/subdomian.alumniThive.com/index"
     },
     "dependencies": {
         "@apollo/server": "^4.10.0",
