@@ -1,10 +1,10 @@
 import { SQL, and, eq, inArray, sql } from 'drizzle-orm'
-import { db } from '../../../../../@drizzle'
+import { db } from '../../../../@drizzle'
 
 import checkAuth from '../../utils/auth/checkAuth.utils'
 
 import { userOrg } from './mentorship.resolvers'
-import { moduleFaqs } from '../../../../../@drizzle/src/db/schema'
+import { moduleFaqs } from '../../../../@drizzle/src/db/schema'
 
 const faqResolvers = {
     Query: {

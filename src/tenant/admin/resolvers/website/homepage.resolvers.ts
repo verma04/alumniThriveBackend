@@ -1,4 +1,4 @@
-import { db } from '../../../../../@drizzle'
+import { db } from '../../../../@drizzle'
 
 import { GraphQLError } from 'graphql'
 
@@ -10,7 +10,7 @@ import {
     headerLinks,
     homePageCarousel,
     orgSocialMedia,
-} from '../../../../../@drizzle/src/db/schema'
+} from '../../../../@drizzle/src/db/schema'
 import { eq } from 'drizzle-orm'
 import upload from '../../utils/upload/upload.utils'
 import { userOrg } from '../admin/mentorship.resolvers'

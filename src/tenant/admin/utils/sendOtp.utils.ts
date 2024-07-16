@@ -1,5 +1,5 @@
-import { db } from '../../../../@drizzle'
-import { otp } from '../../../../@drizzle/src/db/schema'
+import { db } from '../../../@drizzle'
+import { otp } from '../../../@drizzle/src/db/schema'
 import { encryptToken } from './crypto/jwt.crypto'
 import { encryptOtp } from './crypto/otp.crypto'
 const { v4: uuidv4 } = require('uuid')

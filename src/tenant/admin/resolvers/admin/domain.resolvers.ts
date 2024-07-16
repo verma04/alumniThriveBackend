@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm'
-import { db } from '../../../../../@drizzle'
-import { customDomain } from '../../../../../@drizzle/src/db/schema'
+import { db } from '../../../../@drizzle'
+import { customDomain } from '../../../../@drizzle/src/db/schema'
 import { userOrg } from './mentorship.resolvers'
 import checkAuth from '../../utils/auth/checkAuth.utils'
 

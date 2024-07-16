@@ -1,11 +1,11 @@
 import { and, asc, desc, eq, sql } from 'drizzle-orm'
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import {
     alumniFeed,
     feedComment,
     groups,
     media,
-} from '../../../../@drizzle/src/db/schema'
+} from '../../../@drizzle/src/db/schema'
 import { groupFeed } from '../../ts-types/group.ts-type'
 import checkAuth from '../../utils/auth/checkAuth.utils'
 import slugify from 'slugify'

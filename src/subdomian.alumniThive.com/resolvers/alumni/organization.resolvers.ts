@@ -1,4 +1,4 @@
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 
 import { GraphQLError } from 'graphql'
 
@@ -8,7 +8,7 @@ import {
     alumniToOrganization,
     organization,
     organizationTag,
-} from '../../../../@drizzle/src/db/schema'
+} from '../../../@drizzle/src/db/schema'
 import { and, eq } from 'drizzle-orm'
 
 import { inputKyc, kyc } from '../../ts-types/types'

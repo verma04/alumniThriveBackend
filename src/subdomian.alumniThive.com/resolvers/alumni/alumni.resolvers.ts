@@ -1,12 +1,12 @@
 import { and, eq } from 'drizzle-orm'
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import domainCheck from '../../../commanUtils/domianCheck'
 import checkAuth from '../../utils/auth/checkAuth.utils'
 import {
     alumniToOrganization,
     eventHost,
     events,
-} from '../../../../@drizzle/src/db/schema'
+} from '../../../@drizzle/src/db/schema'
 
 const alumniResolvers = {
     Query: {

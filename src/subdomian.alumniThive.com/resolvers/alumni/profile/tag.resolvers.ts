@@ -1,8 +1,8 @@
 import { and, eq } from 'drizzle-orm'
 import domainCheck from '../../../../commanUtils/domianCheck'
 import checkAuth from '../../../utils/auth/checkAuth.utils'
-import { db } from '../../../../../@drizzle'
-import { alumniToOrganization } from '../../../../../@drizzle/src/db/schema'
+import { db } from '../../../../@drizzle'
+import { alumniToOrganization } from '../../../../@drizzle/src/db/schema'
 
 const tagResolvers = {
     Query: {

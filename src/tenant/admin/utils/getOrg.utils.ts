@@ -1,4 +1,4 @@
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import { eq } from 'drizzle-orm'
 const getOrg = async (id: string) => {
     const org = await db.query.loginSession.findFirst({

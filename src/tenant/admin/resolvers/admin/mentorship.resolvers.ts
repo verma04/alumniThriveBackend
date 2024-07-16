@@ -1,10 +1,10 @@
 import { and, desc, eq } from 'drizzle-orm'
-import { db } from '../../../../../@drizzle'
+import { db } from '../../../../@drizzle'
 import {
     mentorShip,
     mentorshipCategory,
     mentorshipSkills,
-} from '../../../../../@drizzle/src/db/schema'
+} from '../../../../@drizzle/src/db/schema'
 import checkAuth from '../../utils/auth/checkAuth.utils'
 import { GraphQLError } from 'graphql'
 

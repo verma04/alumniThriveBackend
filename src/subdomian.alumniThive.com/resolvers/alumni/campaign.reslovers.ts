@@ -1,11 +1,11 @@
 import { GraphQLError } from 'graphql'
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import {
     alumniStory,
     alumniStoryCategory,
     campaign,
     domain,
-} from '../../../../@drizzle/src/db/schema'
+} from '../../../@drizzle/src/db/schema'
 import domainCheck from '../../../commanUtils/domianCheck'
 import checkAuth from '../../utils/auth/checkAuth.utils'
 import { and, desc, eq } from 'drizzle-orm'

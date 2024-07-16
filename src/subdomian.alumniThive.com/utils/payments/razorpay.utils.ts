@@ -1,4 +1,4 @@
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import { and } from 'drizzle-orm'
 const Razorpay = require('razorpay')
 const razorpayUtils = async (orgId) => {

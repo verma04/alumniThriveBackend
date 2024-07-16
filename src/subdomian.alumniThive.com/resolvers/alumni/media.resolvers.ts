@@ -1,9 +1,9 @@
 import { eq } from 'drizzle-orm'
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import domainCheck from '../../../commanUtils/domianCheck'
 import { getMedia } from '../../ts-types/media.ts-type'
 import checkAuth from '../../utils/auth/checkAuth.utils'
-import { media } from '../../../../@drizzle/src/db/schema'
+import { media } from '../../../@drizzle/src/db/schema'
 
 const mediaResolvers = {
     Query: {

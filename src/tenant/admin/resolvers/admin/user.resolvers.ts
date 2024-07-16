@@ -1,4 +1,4 @@
-import { db } from '../../../../../@drizzle'
+import { db } from '../../../../@drizzle'
 
 import checkAuth from '../../utils/auth/checkAuth.utils'
 

@@ -1,7 +1,7 @@
 import { encryptToken } from './crypto/jwt.crypto'
 import { encryptOtp } from './crypto/otp.crypto'
-import { db } from '../../../@drizzle'
-import { userOtp } from '../../../@drizzle/src/db/schema'
+import { db } from '../../@drizzle'
+import { userOtp } from '../../@drizzle/src/db/schema'
 
 const sendOtp = async (check: any) => {
     try {

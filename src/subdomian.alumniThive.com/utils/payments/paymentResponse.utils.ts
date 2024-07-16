@@ -1,5 +1,5 @@
-import { db } from '../../../../@drizzle'
-import { organization } from '../../../../@drizzle/src/db/schema'
+import { db } from '../../../@drizzle'
+import { organization } from '../../../@drizzle/src/db/schema'
 import { razorpayUtils } from './razorpay.utils'
 
 const paymentResponse = async (org_id, amount) => {

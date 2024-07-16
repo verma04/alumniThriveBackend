@@ -1,5 +1,5 @@
 import { and, eq, or } from 'drizzle-orm'
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import domainCheck from '../../../commanUtils/domianCheck'
 import checkAuth from '../../utils/auth/checkAuth.utils'
 import {
@@ -8,7 +8,7 @@ import {
     alumniToOrganization,
     chat,
     messages,
-} from '../../../../@drizzle/src/db/schema'
+} from '../../../@drizzle/src/db/schema'
 import { connectInput } from '../../ts-types/directory-types'
 import { GraphQLError } from 'graphql'
 import { connection } from 'mongoose'

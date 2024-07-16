@@ -1,8 +1,8 @@
 import { and, eq } from 'drizzle-orm'
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import domainCheck from '../../../commanUtils/domianCheck'
 import checkAuth from '../../utils/auth/checkAuth.utils'
-import { alumniFeed, jobs } from '../../../../@drizzle/src/db/schema'
+import { alumniFeed, jobs } from '../../../@drizzle/src/db/schema'
 import slugify from 'slugify'
 import generateSlug from '../../../tenant/admin/utils/slug/generateSlug.utils'
 

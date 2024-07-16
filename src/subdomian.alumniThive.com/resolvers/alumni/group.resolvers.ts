@@ -11,7 +11,7 @@ import {
     or,
     sql,
 } from 'drizzle-orm'
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import {
     groupInvitation,
     groupRequest,
@@ -27,7 +27,7 @@ import {
     groupViews,
     organizationTag,
     alumniToOrganization,
-} from '../../../../@drizzle/src/db/schema'
+} from '../../../@drizzle/src/db/schema'
 import {
     acceptInvitationInput,
     acceptRequestGroup,

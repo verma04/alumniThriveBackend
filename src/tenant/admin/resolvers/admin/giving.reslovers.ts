@@ -1,5 +1,5 @@
 import { and, desc, eq } from 'drizzle-orm'
-import { db } from '../../../../../@drizzle'
+import { db } from '../../../../@drizzle'
 
 import checkAuth from '../../utils/auth/checkAuth.utils'
 
@@ -7,7 +7,7 @@ import { userOrg } from './mentorship.resolvers'
 import {
     campaign,
     campaignCategory,
-} from '../../../../../@drizzle/src/db/schema'
+} from '../../../../@drizzle/src/db/schema'
 import { GraphQLError } from 'graphql'
 
 const givingResolvers = {

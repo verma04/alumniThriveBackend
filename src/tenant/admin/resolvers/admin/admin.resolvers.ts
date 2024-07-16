@@ -1,9 +1,9 @@
-import { db } from '../../../../../@drizzle'
+import { db } from '../../../../@drizzle'
 import {
     loginSession,
     profileInfo,
     users,
-} from '../../../../../@drizzle/src/db/schema'
+} from '../../../../@drizzle/src/db/schema'
 import { GraphQLError } from 'graphql'
 import bcrypt from 'bcrypt'
 import { Query } from 'mongoose'

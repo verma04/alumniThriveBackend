@@ -1,12 +1,12 @@
 import { and, count, desc, eq, ilike, not, or, sql } from 'drizzle-orm'
-import { db } from '../../../../../@drizzle'
+import { db } from '../../../../@drizzle'
 import checkAuth from '../../../utils/auth/checkAuth.utils'
 import domainCheck from '../../../../commanUtils/domianCheck'
 import {
     alumni,
     issueComment,
     issues,
-} from '../../../../../@drizzle/src/db/schema'
+} from '../../../../@drizzle/src/db/schema'
 
 const filterConditions = (org_id, search) => {
     const conditions = and(

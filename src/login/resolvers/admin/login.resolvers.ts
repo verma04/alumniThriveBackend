@@ -5,14 +5,14 @@ import {
     googleLoginInput,
     profileCreationInput,
 } from '../../ts-types/types'
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import { and, eq } from 'drizzle-orm'
 import {
     aboutAlumni,
     alumni,
     alumniProfile,
     alumniToOrganization,
-} from '../../../../@drizzle/src/db/schema'
+} from '../../../@drizzle/src/db/schema'
 import generateJwtToken from '../../utils/generateJwtToken.utils'
 import checkAuth from '../../utils/auth/checkAuth.utils'
 

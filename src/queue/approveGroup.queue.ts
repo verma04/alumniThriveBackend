@@ -1,5 +1,5 @@
 import { Client, cacheExchange, fetchExchange } from '@urql/core'
-import { db } from '../../@drizzle'
+import { db } from '../@drizzle'
 const client = new Client({
     url: 'http://localhost:1000',
     exchanges: [cacheExchange, fetchExchange],

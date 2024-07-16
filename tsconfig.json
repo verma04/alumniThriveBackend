@@ -9,6 +9,7 @@
         "esModuleInterop": true,
         "jsx": "react",
         "types": ["node"],
+        "skipLibCheck": true,
         "paths": {
       "@/*": ["./src/*"],
    

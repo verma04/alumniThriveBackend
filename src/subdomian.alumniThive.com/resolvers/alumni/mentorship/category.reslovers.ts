@@ -1,6 +1,6 @@
 import { and, eq } from 'drizzle-orm'
-import { db } from '../../../../../@drizzle'
-import { mentorShip } from '../../../../../@drizzle/src/db/schema'
+import { db } from '../../../../@drizzle'
+import { mentorShip } from '../../../../@drizzle/src/db/schema'
 import domainCheck from '../../../../commanUtils/domianCheck'
 import checkAuth from '../../../utils/auth/checkAuth.utils'
 const uniqueSlug = require('unique-slug')

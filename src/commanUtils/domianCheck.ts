@@ -1,4 +1,4 @@
-import { db } from '../../@drizzle'
+import { db } from '../@drizzle'
 import { GraphQLError } from 'graphql'
 
 const domainCheck = async (domain: any) => {

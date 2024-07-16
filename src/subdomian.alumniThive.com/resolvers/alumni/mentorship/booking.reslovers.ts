@@ -1,10 +1,10 @@
 import { and, eq } from 'drizzle-orm'
-import { db } from '../../../../../@drizzle'
+import { db } from '../../../../@drizzle'
 import checkAuth from '../../../utils/auth/checkAuth.utils'
 import {
     mentorShipBooking,
     organization,
-} from '../../../../../@drizzle/src/db/schema'
+} from '../../../../@drizzle/src/db/schema'
 import domainCheck from '../../../../commanUtils/domianCheck'
 const Razorpay = require('razorpay')
 

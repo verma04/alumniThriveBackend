@@ -1,5 +1,5 @@
 import { and, eq, or } from 'drizzle-orm'
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import domainCheck from '../../../commanUtils/domianCheck'
 import checkAuth from '../../utils/auth/checkAuth.utils'
 import {
@@ -8,7 +8,7 @@ import {
     marketPlace,
     marketPlaceImages,
     messages,
-} from '../../../../@drizzle/src/db/schema'
+} from '../../../@drizzle/src/db/schema'
 import slugify from 'slugify'
 
 import uploadImageToFolder from '../../../tenant/admin/utils/upload/uploadImageToFolder.utils'

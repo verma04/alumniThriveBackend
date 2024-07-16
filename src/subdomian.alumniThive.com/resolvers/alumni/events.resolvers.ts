@@ -1,5 +1,5 @@
 import { and, eq, ilike, not, or, sql } from 'drizzle-orm'
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import domainCheck from '../../../commanUtils/domianCheck'
 import {
 
@@ -29,7 +29,7 @@ import {
     eventTypesEnum,
     groups,
     organization,
-} from '../../../../@drizzle/src/db/schema'
+} from '../../../@drizzle/src/db/schema'
 import { GraphQLError } from 'graphql'
 import slugify from 'slugify'
 import upload from '../../utils/upload/upload.utils'

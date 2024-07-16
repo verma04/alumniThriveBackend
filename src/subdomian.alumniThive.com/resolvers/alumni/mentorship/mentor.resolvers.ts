@@ -1,11 +1,11 @@
 import { and, eq } from 'drizzle-orm'
-import { db } from '../../../../../@drizzle'
+import { db } from '../../../../@drizzle'
 import checkAuth from '../../../utils/auth/checkAuth.utils'
 import domainCheck from '../../../../commanUtils/domianCheck'
 import {
     mentorShip,
     mentorShipService,
-} from '../../../../../@drizzle/src/db/schema'
+} from '../../../../@drizzle/src/db/schema'
 
 const getOrganizationUser = async (id, org_id) => {
     const user = await db.query.mentorShip.findFirst({

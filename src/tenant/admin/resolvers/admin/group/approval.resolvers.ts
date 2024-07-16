@@ -1,12 +1,12 @@
 import checkAuth from '../../../utils/auth/checkAuth.utils'
 import { userOrg } from '../mentorship.resolvers'
-import { db } from '../../../../../../@drizzle'
+import { db } from '../../../../../@drizzle'
 import { GraphQLError } from 'graphql'
 import {
     groupInterests,
     groupTheme,
     groups,
-} from '../../../../../../@drizzle/src/db/schema'
+} from '../../../../../@drizzle/src/db/schema'
 import { SQL, and, eq, inArray, sql } from 'drizzle-orm'
 
 const approvalResolvers = {

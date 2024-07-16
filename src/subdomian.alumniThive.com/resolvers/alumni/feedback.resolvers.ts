@@ -1,9 +1,9 @@
 import { and, eq } from 'drizzle-orm'
-import { db } from '../../../../@drizzle'
+import { db } from '../../../@drizzle'
 import domainCheck from '../../../commanUtils/domianCheck'
 import generateSlug from '../../../tenant/admin/utils/slug/generateSlug.utils'
 import checkAuth from '../../utils/auth/checkAuth.utils'
-import { feedBack, feedBackQuestion } from '../../../../@drizzle/src/db/schema'
+import { feedBack, feedBackQuestion } from '../../../@drizzle/src/db/schema'
 
 const feedbackResolvers = {
     Query: {
